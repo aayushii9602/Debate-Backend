@@ -12,7 +12,7 @@ export const register = bigPromise(async (req, res, next) => {
         .status(400)
         .json({ success: false, message: 'all fields are required!' })
     }
-    const existingUser = await User.findById({ email: email })
+    const existingUser = await User.findOne({ email: email })
       .lean()
       .catch((ExistingUsererror) => {
         console.log(
@@ -41,7 +41,7 @@ export const login = bigPromise(async (req, res, next) => {
         .status(400)
         .json({ success: false, message: 'all fields are required!' })
     }
-    const existingUser = await User.findOne({ username })
+    const existingUser = await User.findOne({ username: username })
       .lean()
       .catch((error) => {
         console.log(`Error while checking for existing user:: ${error}`)
