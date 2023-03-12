@@ -1,45 +1,49 @@
-// Import Dependencies
 import mongoose from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
 
-const userSchema = new mongoose.Schema(
-  {
-    username: {
-      type: String,
-      required: true,
-      maxlength: [40, 'Name should be under 40 characters.'],
-    },
-    email: {
-      type: String,
-      required: [true, 'Please provide an email'],
-      validate: [validator.isEmail, 'Please enter email in correct format'],
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-      minlength: [6, 'Password should be of atleast 6 characters.'],
-      // select:false  // so that password will not go with model , we don't have to do user.password=undefined
-    },
-    role: {
-      type: [
-        {
-          type: String,
-          enum: ['admin', 'user'],
-        },
-      ],
-      default: ['user'],
-    },
-    forgotPasswordToken: String,
-    forgotPasswordExpiry: Date,
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    // required:[true,'Please provide a name'],
+    maxlength: [40, 'Name should be under 40 characters.'],
   },
-  {
-    timestamps: true,
-  }
-)
+  email: {
+    type: String,
+    required: [true, 'Please provide an email'],
+    validate: [validator.isEmail, 'Please enter email in correct format'],
+    unique: true,
+  },
+  password: {
+    type: String,
+    // required:[true,'Please provide a password'],
+    minlength: [6, 'Password should be of atleast 6 characters.'],
+    // select:false  // so that password will not go with model , we don't have to do user.password=undefined
+  },
+  role: {
+    type: [
+      {
+        type: String,
+        enum: ['admin', 'user'],
+      },
+    ],
+    // required:true,
+    default: ['user'],
+  },
+  photo: {
+    id: {
+      type: String,
+    },
+    secure_url: {
+      type: String,
+    },
+  },
+
+  forgotPasswordToken: String,
+  forgotPasswordExpiry: Date,
+})
 
 // encrypt password before save
 userSchema.pre('save', async function (next) {
@@ -82,4 +86,5 @@ userSchema.methods.getForgotPasswordToken = function () {
 }
 
 const User = mongoose.model('User', userSchema)
+
 export default User

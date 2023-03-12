@@ -1,14 +1,13 @@
-import express from 'express'
-const router = express.Router()
+import express from "express";
+const router = express.Router();
 
-// import controllers
-import { login, register } from '../controllers/userController.js'
+// import controller
+import { signup, login, logout } from "../controllers/userController.js";
+// import userMiddlewares
+import { isLoggedIn, customRole } from "../middlewares/userMiddlewares.js";
 
-router.route('/register').post(register)
-router.route('/login').post(login)
-// router.route('/createUser').post(createUser)
-// router.route('/deleteUser/:id').delete(deleteUser)
-// router.route('/retriveUser').get(retriveUser)
-// router.route('/updateUser/:id').put(updateUser)
+router.route("/signup").post(signup);
+router.route("/login").post(login);
+router.route("/logout").get(logout);
 
-export default router
+export default router;
