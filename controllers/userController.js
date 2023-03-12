@@ -41,11 +41,12 @@ export const login = bigPromise(async (req, res, next) => {
         .status(400)
         .json({ success: false, message: 'all fields are required!' })
     }
-    const existingUser = await User.findById({ username: username })
+    const existingUser = await User.findOne({ username })
       .lean()
       .catch((error) => {
         console.log(`Error while checking for existing user:: ${error}`)
       })
+    console.log(existingUser)
     if (!existingUser) {
       return res.status(500).json({
         success: false,
